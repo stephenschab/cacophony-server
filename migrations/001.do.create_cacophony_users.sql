@@ -3,5 +3,5 @@ CREATE TABLE cacophony_users (
   user_name TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL,
   password TEXT NOT NULL,
-  date_created TIMESTAMPTZ DEFAULT now() NOT NULL,
-)
+  date_created TIMESTAMPTZ DEFAULT now() NOT NULL
+);

@@ -12,7 +12,7 @@ function requireAuth(req, res, next) {
         error: 'Missing bearer token'
       });
   } else {
-    bearerToken = authToken.slice(7, authToken.length)
+    bearerToken = authToken.slice(7, authToken.length);
   }
 
   try {
@@ -28,21 +28,21 @@ function requireAuth(req, res, next) {
             .status(401)
             .json({
               error: 'Unauthorized request'
-            })
+            });
         }
 
-        req.user = user
-        next()
-      })
+        req.user = user;
+        next();
+      });
   } catch(error) {
     res
       .status(401)
       .json({
         error: 'Unathorized request'
-      })
+      });
   }
 }
 
 module.exports = {
   requireAuth
-}
+};

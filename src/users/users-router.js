@@ -7,8 +7,7 @@ const usersRouter = express.Router();
 const jsonBodyParser = express.json();
 
 usersRouter
-  .route('/')
-  .post(jsonBodyParser, (req, res, next) => {
+  .post('/', jsonBodyParser, (req, res, next) => {
     const { user_name, email, password } = req.body;
     
     for (const field of ['user_name', 'email', 'password']) {
@@ -31,16 +30,17 @@ usersRouter
         });
     }
 
-    UsersService.hasUserWithUsername(
+    UsersService.hasUserWithUserName(
       req.app.get('db'),
       user_name
     )
-      .then(hasUserWithUsername => {
-        if(hasUserWithUsername) {
+      .then(hasUserWithUserName => {
+        if(hasUserWithUserName) {
+          // console.log(h)
           return res
             .status(400)
             .json({
-              error: 'Username already exists'
+              error: 'User name already exists'
             });
         }
 
@@ -67,3 +67,5 @@ usersRouter
       })
       .catch(next);
   });
+
+module.exports = usersRouter;

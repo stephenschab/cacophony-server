@@ -4,7 +4,7 @@ const xss = require('xss');
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
 
 const UsersService = {
-  hasUserWithUsername(db, user_name) {
+  hasUserWithUserName(db, user_name) {
     return db('cacophony_users')
       .where({ user_name })
       .first()
@@ -15,7 +15,7 @@ const UsersService = {
     return db('cacophony_users')
       .insert(newUser)
       .returning('*')
-      .then(([user]) => user)
+      .then(([user]) => user);
   },
 
   validatePassword(password) {
@@ -23,8 +23,8 @@ const UsersService = {
       return 'Password must be longer than 8 characters';
     }
 
-    if (password.length > 24) {
-      return 'Password must be less than 24 characters';
+    if (password.length > 72) {
+      return 'Password must be less than 72 characters';
     }
 
     if (password.startsWith(' ') || password.endsWith(' ')) {
