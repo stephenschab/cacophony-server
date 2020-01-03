@@ -36,7 +36,6 @@ usersRouter
     )
       .then(hasUserWithUserName => {
         if(hasUserWithUserName) {
-          // console.log(h)
           return res
             .status(400)
             .json({

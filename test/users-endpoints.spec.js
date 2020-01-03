@@ -1,9 +1,10 @@
 const knex = require('knex');
+const bcrypt = require('bcryptjs');
 
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('Users Endpoints', function() {
+describe('Users Endpoints', function() {
   let db;
 
   const { testUsers } = helpers.makePostsFixtures();
@@ -25,12 +26,12 @@ describe.only('Users Endpoints', function() {
 
   describe('POST /api/users', () => {
     context('User Validation', () => {
-      beforeEach('insert users', () => {
+      beforeEach('insert users', () => 
         helpers.seedUsers(
           db,
           testUsers
-        );
-      });
+        )
+      );
 
       const requiredFields = ['user_name', 'email', 'password'];
 
@@ -82,13 +83,13 @@ describe.only('Users Endpoints', function() {
         const passwordStartsWithSpaces = {
           user_name: 'test1',
           email: 'fakeEmail@gmail.com',
-          password: ' Passw0rd!',
+          password: ' P4ssw0rd!',
         };
 
         return supertest(app)
           .post('/api/users')
           .send(passwordStartsWithSpaces)
-          .expect(400, { error: 'Password must not start or end with empty spaces'})
+          .expect(400, { error: 'Password must not start or end with empty spaces'});
       });
 
       it('responds 400 error when password ends with spaces', () => {
@@ -101,7 +102,7 @@ describe.only('Users Endpoints', function() {
         return supertest(app)
           .post('/api/users')
           .send(passwordEndsWithSpaces)
-          .expect(400, { error: 'Password must not start or end with empty spaces'})
+          .expect(400, { error: 'Password must not start or end with empty spaces'});
       });
 
       it('responds 400 error when password isn\'t complex enough', () => {
@@ -128,6 +129,43 @@ describe.only('Users Endpoints', function() {
           .post('/api/users')
           .send(duplicateUser)
           .expect(400, { error: 'User name already exists' });
+      });
+    });
+
+    context('Happy path', () => {
+      it('responds 201, serialized user, storing bcrypted password', () => {
+        const newUser = {
+          user_name: 'test43',
+          email: 'fakeEmail43@gmail.com',
+          password: 'Passw0rd!'
+        };
+
+        return supertest(app)
+          .post('/api/users')
+          .send(newUser)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property('id');
+            expect(res.body.user_name).to.eql(newUser.user_name);
+            expect(res.body.email).to.eql(newUser.email);
+            expect(res.body).to.not.have.property('password');
+            expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
+          })
+          .expect(res =>
+            db('cacophony_users')
+              .select('*')
+              .where({ id: res.body.id })
+              .first()
+              .then(row => {
+                expect(row.user_name).to.eql(newUser.user_name);
+                expect(row.email).to.eql(newUser.email);
+
+                return bcrypt.compare(newUser.password, row.password);
+              })
+              .then(compareMatch => {
+                expect(compareMatch).to.be.true;
+              })
+          );
       });
     });
   });

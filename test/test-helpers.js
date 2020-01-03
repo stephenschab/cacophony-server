@@ -17,11 +17,13 @@ function makeUsersArray() {
     },
     {
       id: 3,
+      user_name: 'test-user-3',
       email: 'fakeEmail3@gmail.com',
       password: 'password3'
     },
     {
       id: 4,
+      user_name: 'test-user-4',
       email: 'fakeEmail4@gmail.com',
       password: 'password4'
     }
