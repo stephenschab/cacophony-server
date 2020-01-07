@@ -3,7 +3,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('Posts Endpoints', function() {
+describe('Posts Endpoints', function() {
   let db;
 
   const {

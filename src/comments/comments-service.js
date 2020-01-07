@@ -26,7 +26,7 @@ const CommentsService = {
         'user.id'
       )
       .where('comment.id', id)
-      .first()
+      .first();
   },
 
   insertComment(db, newComment) {
@@ -39,14 +39,14 @@ const CommentsService = {
       );
   },
 
-  serializeComment(comment) {
-    return {
-      id: comment.id,
-      text: xss(comment.text),
-      post_id: comment.post_id,
-      user: comment.user || {}
-    };
-  }
+  // serializeComment(comment) {
+  //   return {
+  //     id: comment.id,
+  //     text: xss(comment.text),
+  //     post_id: comment.post_id,
+  //     user: comment.user || {}
+  //   };
+  // }
 };
 
 module.exports = CommentsService;

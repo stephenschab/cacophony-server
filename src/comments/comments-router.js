@@ -14,7 +14,7 @@ commentsRouter
     const newComment = { text, post_id };
 
     for (const [key, value] of Object.entries(newComment)) {
-      if (value == null) {
+      if (value === null) {
         return res
           .status(400)
           .json({
