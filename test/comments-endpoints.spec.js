@@ -1,3 +1,4 @@
+
 const knex = require('knex');
 
 const app = require('../src/app');
@@ -50,6 +51,7 @@ describe.only('Comments Endpoints', function() {
         .send(newComment)
         .expect(201)
         .expect(res => {
+          console.log(res);
           expect(res.body).to.have.property('id');
           expect(res.body.text).to.eql(newComment.text);
           expect(res.body.post_id).to.eql(newComment.post_id);

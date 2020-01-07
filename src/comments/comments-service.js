@@ -2,30 +2,32 @@ const xss = require('xss');
 
 const CommentsService = {
   getById(db, id) {
-    return db('thingful_comments AS comments')
+    return db
+      .from('cacophony_comments AS com')
       .select(
-        'comment.id',
-        'comment.text',
-        'comment.date_created',
-        'comment.post_id',
-        db.raw(
-          `row_to_json(
-            (SELECT tmp FROM (
-              SELECT
-                user.id,
-                user.user_name,
-                user.email,
-                user.date_created
-            ) tmp)
-          ) AS "user"`
-        )
+        'com.id',
+        'com.text',
+        'com.date_created',
+        'com.post_id',
+        'com.user_id'
+        // db.raw(
+        //   `row_to_json(
+        //     (SELECT tmp FROM (
+        //       SELECT
+        //         user.id,
+        //         user.user_name,
+        //         user.email,
+        //         user.date_created
+        //     ) tmp)
+        //   ) AS "user"`
+        // )
       )
       .leftJoin(
         'cacophony_users AS user',
-        'comment.user_id',
+        'com.user_id',
         'user.id'
       )
-      .where('comment.id', id)
+      .where('com.id', id)
       .first();
   },
 
@@ -39,14 +41,14 @@ const CommentsService = {
       );
   },
 
-  // serializeComment(comment) {
-  //   return {
-  //     id: comment.id,
-  //     text: xss(comment.text),
-  //     post_id: comment.post_id,
-  //     user: comment.user || {}
-  //   };
-  // }
+  serializeComment(comment) {
+    return {
+      id: comment.id,
+      text: xss(comment.text),
+      post_id: comment.post_id,
+      user: comment.user || {}
+    };
+  }
 };
 
 module.exports = CommentsService;
