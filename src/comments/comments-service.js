@@ -36,9 +36,9 @@ const CommentsService = {
       .insert(newComment)
       .returning('*')
       .then(([comment]) => comment)
-      .then(comment =>
-        CommentsService.getById(db, comment.id)
-      );
+      // .then(comment =>
+      //   CommentsService.getById(db, comment.id)
+      // );
   },
 
   serializeComment(comment) {
