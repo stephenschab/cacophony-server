@@ -201,4 +201,35 @@ describe('Posts Endpoints', function() {
       });
     });
   });
+
+  describe.only('POST /posts', () => {
+    beforeEach('insert users', () => 
+      helpers.seedPostsTables(
+        db,
+        testUsers,
+        testPosts,
+        testComments
+      ));
+    it('creates a post, responding with 201 and the new post', function() {
+      const testUser = testUsers[0];
+      const newPost = {
+        title: 'Test title',
+        content: 'test content',
+        genre: 'rock',
+        user_id: testUser.id
+      };
+      
+      return supertest(app)
+        .post('/api/posts')
+        .send(newPost)
+        .expect(201)
+        .expect(res => {
+          expect(res.body.title).to.eql(newPost.title);
+          expect(res.body.content).to.eql(newPost.content);
+          expect(res.body.genre).to.eql(newPost.genre);
+          expect(res.body.user_id).to.eql(newPost.user_id);
+          expect(res.body).to.have.property('id');
+        });
+    });
+  });
 });

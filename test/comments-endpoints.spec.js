@@ -4,7 +4,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('Comments Endpoints', function() {
+describe('Comments Endpoints', function() {
   let db;
 
   const {
@@ -38,12 +38,13 @@ describe.only('Comments Endpoints', function() {
     );
 
     it('creates a comment, responding with 201 and the new comment', function() {
-      this.retries(3);
+      // this.retries(3);
       const testPost = testPosts[0];
       const testUser = testUsers[0];
       const newComment = {
         text: 'Test new comment',
-        post_id: testPost.id
+        post_id: testPost.id,
+        user_id: testUser.id
       };
       return supertest(app)
         .post('/api/comments')
@@ -51,7 +52,6 @@ describe.only('Comments Endpoints', function() {
         .send(newComment)
         .expect(201)
         .expect(res => {
-          console.log(res);
           expect(res.body).to.have.property('id');
           expect(res.body.text).to.eql(newComment.text);
           expect(res.body.post_id).to.eql(newComment.post_id);
@@ -60,23 +60,31 @@ describe.only('Comments Endpoints', function() {
           const expectedDate = new Date().toLocaleString();
           const actualDate = new Date(res.body.date_created).toLocaleString();
           expect(actualDate).to.eql(expectedDate);
-        })
-        .expect(res =>
-          db('cacophony_comments')
-            .select('*')
-            .where({ id: res.body.id })
-            .first()
-            .then(row => {
-              expect(row.text).to.eql(newComment.text);
-              expect(row.post_id).to.eql(newComment.post_id);
-              expect(row.user_id).to.eql(testUser.user_id);
-              const expectedDate = new Date().toLocaleString();
-              const actualDate = new Date(res.body.date_created).toLocaleString();
-              expect(actualDate).to.eql(expectedDate);
-            })
-        );
+        });
     });
 
+    const requiredFields = ['text', 'post_id',];
 
+    requiredFields.forEach(field => {
+      const testPost = testPosts[0];
+      const testUser = testUsers[0];
+      const newComment = {
+        text: 'Test new comment',
+        post_id: testPost.id,
+        user_id: testUser.id
+      };
+
+      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+        delete newComment[field];
+
+        return supertest(app)
+          .post('/api/comments')
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .send(newComment)
+          .expect(400, {
+            error: `Missing '${field}' in request body`
+          });
+      });
+    });
   });
 });

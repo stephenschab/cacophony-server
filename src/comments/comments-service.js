@@ -1,5 +1,7 @@
 const xss = require('xss');
 
+const UsersService = require('../users/users-service')
+
 const CommentsService = {
   getById(db, id) {
     return db
@@ -8,24 +10,12 @@ const CommentsService = {
         'com.id',
         'com.text',
         'com.date_created',
-        'com.post_id',
-        'com.user_id'
-        // db.raw(
-        //   `row_to_json(
-        //     (SELECT tmp FROM (
-        //       SELECT
-        //         user.id,
-        //         user.user_name,
-        //         user.email,
-        //         user.date_created
-        //     ) tmp)
-        //   ) AS "user"`
-        // )
+        ...userFields
       )
-      .leftJoin(
+      .join(
         'cacophony_users AS user',
-        'com.user_id',
-        'user.id'
+        'user.id',
+        'com.user_id'
       )
       .where('com.id', id)
       .first();
@@ -35,10 +25,7 @@ const CommentsService = {
     return db('cacophony_comments')
       .insert(newComment)
       .returning('*')
-      .then(([comment]) => comment)
-      // .then(comment =>
-      //   CommentsService.getById(db, comment.id)
-      // );
+      .then(([comment]) => comment);
   },
 
   serializeComment(comment) {
@@ -46,9 +33,15 @@ const CommentsService = {
       id: comment.id,
       text: xss(comment.text),
       post_id: comment.post_id,
-      user: comment.user || {}
+      date_created: comment.date_created,
+      user: UsersService.serializeUser(comment.user)
     };
   }
 };
+
+const userFields = [
+  'user.id AS user:id',
+  'user.user_name AS user:user_name'
+];
 
 module.exports = CommentsService;

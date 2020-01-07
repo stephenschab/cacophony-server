@@ -40,12 +40,21 @@ const PostsService = {
         ...userFields
       )
       .where('comment.post_id', post_id)
-      .leftJoin(
+      .join(
         'cacophony_users AS user',
         'comment.user_id',
         'user.id'
       )
       .groupBy('comment.id', 'user.id');
+  },
+
+  insertPost(db, newPost) {
+    return db('cacophony_posts')
+      .insert(newPost)
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
   },
 
   serializePosts(posts) {
@@ -88,9 +97,7 @@ const PostsService = {
 
 const userFields = [
   'user.id AS user:id',
-  'user.user_name AS user:user_name',
-  'user.email AS user:email',
-  'user.date_created AS user:date_created'
+  'user.user_name AS user:user_name'
 ];
 
 module.exports = PostsService;

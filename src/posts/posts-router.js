@@ -4,6 +4,7 @@ const PostsService = require('./posts-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 
 const postsRouter = express.Router();
+const jsonBodyParser = express.json();
 
 postsRouter
   .route('/')
@@ -13,7 +14,26 @@ postsRouter
         res.json(PostsService.serializePosts(posts));
       })
       .catch(next)
+  })
+  .post(jsonBodyParser, (req, res, next) => {
+    const { title, content, genre, user_id } = req.body;
+    const newPost = { title, content, genre, user_id };
+
+    PostsService.insertPost(
+      req.app.get('db'),
+      newPost
+    )
+      .then(post => {
+        res
+          .status(201)
+          .location(`/api/posts/${post.id}`)
+          .json(post)
+      })
+      .catch(next)
   });
+
+postsRouter
+  .route
 
 postsRouter
   .route('/:post_id')
