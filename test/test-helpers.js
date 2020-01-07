@@ -157,6 +157,7 @@ function makeExpectedPostComments(users, postId, comments) {
       user: {
         id: commentUser.id,
         user_name: commentUser.user_name,
+        email: commentUser.email,
         date_created: commentUser.date_created
       }
     }
@@ -219,13 +220,18 @@ function seedUsers(db, users) {
     )
 }
 
-function seedPostsTables(db, users, posts, comments=[]) {
+function seedPostsTables(db, users, posts, comments) {
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('cacophony_posts').insert(posts)
     await trx.raw(
       'SELECT setval(\'cacophony_posts_id_seq\', ?)',
       [posts[posts.length - 1].id]
+    )
+    await trx.into('cacophony_comments').insert(comments)
+    await trx.raw(
+      'SELECT setval(\'cacophony_comments_id_seq\', ?)',
+      [comments[comments.length - 1].id]
     )
   })
 }
