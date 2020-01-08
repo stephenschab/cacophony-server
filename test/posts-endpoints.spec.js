@@ -221,6 +221,7 @@ describe('Posts Endpoints', function() {
       
       return supertest(app)
         .post('/api/posts')
+        .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(newPost)
         .expect(201)
         .expect(res => {
@@ -229,6 +230,48 @@ describe('Posts Endpoints', function() {
           expect(res.body.genre).to.eql(newPost.genre);
           expect(res.body.user_id).to.eql(newPost.user_id);
           expect(res.body).to.have.property('id');
+        });
+    });
+
+    const requiredFields = ['title', 'content', 'genre', 'user_id'];
+
+    requiredFields.forEach(field => {
+      const testUser = testUsers[0];
+      const newPost = {
+        title: 'Test title',
+        content: 'test content',
+        genre: 'rock',
+        user_id: testUser.id
+      };
+
+      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+        delete newPost[field];
+
+        return supertest(app)
+          .post('/api/posts')
+          .set('Authorization', helpers.makeAuthHeader(testUser))
+          .send(newPost)
+          .expect(400, {
+            error: `Missing '${field}' in request body`
+          });
+      });
+    });
+
+    it('removes XSS attack content from response', () => {
+      const testUser = helpers.makeUsersArray()[1];
+      const {
+        maliciousPost,
+        expectedPost
+      } = helpers.makeMaliciousPost(testUser);
+
+      return supertest(app)
+        .post('/api/posts')
+        .set('Authorization', helpers.makeAuthHeader(testUser))
+        .send(maliciousPost)
+        .expect(201)
+        .expect(res => {
+          expect(res.body.title).to.eql(expectedPost.title);
+          expect(res.body.content).to.eql(expectedPost.content);
         });
     });
   });

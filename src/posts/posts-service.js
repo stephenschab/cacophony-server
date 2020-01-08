@@ -72,7 +72,7 @@ const PostsService = {
       content: xss(postData.content),
       genre: postData.genre,
       date_created: postData.date_created,
-      user: postData.user || {},
+      user_id: postData.user_id || {},
     };
   },
 

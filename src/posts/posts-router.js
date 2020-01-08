@@ -8,6 +8,7 @@ const jsonBodyParser = express.json();
 
 postsRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
     PostsService.getAllPosts(req.app.get('db'))
       .then(posts => {
@@ -19,6 +20,16 @@ postsRouter
     const { title, content, genre, user_id } = req.body;
     const newPost = { title, content, genre, user_id };
 
+    for (const [key, value] of Object.entries(newPost)) {
+      if (value === undefined) {
+        return res
+          .status(400)
+          .json({
+            error: `Missing '${key}' in request body`
+          })
+      }
+    }
+
     PostsService.insertPost(
       req.app.get('db'),
       newPost
@@ -27,13 +38,10 @@ postsRouter
         res
           .status(201)
           .location(`/api/posts/${post.id}`)
-          .json(post)
+          .json(PostsService.serializePost(post))
       })
       .catch(next)
   });
-
-postsRouter
-  .route
 
 postsRouter
   .route('/:post_id')
