@@ -12,11 +12,6 @@ const PostsService = {
         'user.user_name'
       )
       .Join(
-        'cacophony_comments AS comments',
-        'pst.id',
-        'comments.post_id'
-      )
-      .Join(
         'cacophony_users AS user',
         'pst.user_id',
         'user.id'
