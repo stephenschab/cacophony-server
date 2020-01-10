@@ -16,6 +16,11 @@ const PostsService = {
         'pst.user_id',
         'user.id'
       );
+      .join(
+        'cacophony_comments AS comment',
+        'pst.id',
+        'comment.post_id'
+      )
   },
 
   getById(db, id) {
