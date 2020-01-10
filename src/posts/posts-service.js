@@ -43,8 +43,7 @@ const PostsService = {
         'cacophony_posts AS pst',
         'pst.id',
         'comment.post_id'
-      )
-      .groupBy('pst.id');
+      );
   },
 
   insertPost(db, newPost) {
