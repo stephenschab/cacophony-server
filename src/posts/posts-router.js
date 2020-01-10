@@ -50,7 +50,7 @@ postsRouter
   .all(requireAuth)
   .all(checkPostExists)
   .get((req, res) => {
-    res.json(PostsService.serializePost(res.post));
+    res.json(PostsService.serializePost(post));
   });
 
 postsRouter

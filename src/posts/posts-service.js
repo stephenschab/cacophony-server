@@ -16,7 +16,7 @@ const PostsService = {
         'pst.user_id',
         'user.id'
       )
-      .groupBy('pst.id', 'user.id');
+      .groupBy('user.id');
   },
 
   getById(db, id) {
