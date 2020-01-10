@@ -17,7 +17,7 @@ postsRouter
       .catch(next)
   })
   .post(jsonBodyParser, (req, res, next) => {
-    const { title, content, genre, } = req.body;
+    const { title, content, genre } = req.body;
     const newPost = { title, content, genre };
 
     for (const [key, value] of Object.entries(newPost)) {

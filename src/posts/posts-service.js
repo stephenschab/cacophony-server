@@ -81,8 +81,4 @@ const PostsService = {
   }
 };
 
-const userFields = [
-  'user.user_name AS user:user_name'
-];
-
 module.exports = PostsService;
