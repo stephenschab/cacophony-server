@@ -44,7 +44,7 @@ const PostsService = {
         'pst.id',
         'comment.post_id'
       )
-      .groupBy('comment.id');
+      .groupBy('pst.id');
   },
 
   insertPost(db, newPost) {
