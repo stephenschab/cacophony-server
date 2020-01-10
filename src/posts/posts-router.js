@@ -74,7 +74,7 @@ async function checkPostExists(req, res, next) {
       req.app.get('db'),
       req.params.post_id
     );
-
+      console.log(post)
     if(!post) {
       return res
         .status(404)

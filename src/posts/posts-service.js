@@ -61,7 +61,7 @@ const PostsService = {
   },
 
   serializePosts(posts) {
-    return posts.map(post => this.serializePost(post));
+    return posts.map(this.serializePost);
   },
 
   serializePost(post) {
