@@ -19,21 +19,8 @@ const PostsService = {
   },
 
   getById(db, id) {
-    return db('cacophony_posts AS pst')
-      .select(
-        'pst.id',
-        'pst.title',
-        'pst.content',
-        'pst.genre',
-        'pst.date_created',
-        'user.user_name'
-      )
+    return PostsService.getAllPosts(db)
       .where('pst.id', id)
-      .join(
-        'cacophony_users AS user',
-        'pst.user_id',
-        'user.id'
-      )
       .first();
   },
 
