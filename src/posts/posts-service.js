@@ -1,5 +1,4 @@
 const xss = require('xss');
-const Treeize =require('treeize');
 
 const PostsService = {
   getAllPosts(db) {
@@ -10,14 +9,14 @@ const PostsService = {
         'pst.content',
         'pst.genre',
         'pst.date_created',
-        ...userFields
+        'user.user_name'
       )
-      .leftJoin(
+      .Join(
         'cacophony_comments AS comments',
         'pst.id',
         'comments.post_id'
       )
-      .leftJoin(
+      .Join(
         'cacophony_users AS user',
         'pst.user_id',
         'user.id'
@@ -37,7 +36,7 @@ const PostsService = {
         'comment.id',
         'comment.text',
         'comment.date_created',
-        ...userFields
+        'user.user_name'
       )
       .where('comment.post_id', post_id)
       .join(
@@ -62,17 +61,13 @@ const PostsService = {
   },
 
   serializePost(post) {
-    const postTree = new Treeize();
-
-    const postData = postTree.grow([ post ]).getData()[0];
-
     return {
-      id: postData.id,
-      title: xss(postData.title),
-      content: xss(postData.content),
-      genre: postData.genre,
-      date_created: postData.date_created,
-      user_id: postData.user_id || {},
+      id: post.id,
+      title: xss(post.title),
+      content: xss(post.content),
+      genre: post.genre,
+      date_created: post.date_created,
+      user_name: post.user_name
     };
   },
 
@@ -81,16 +76,12 @@ const PostsService = {
   },
 
   serializePostComment(comment) {
-    const commentTree = new Treeize();
-
-    const commentData = commentTree.grow([ comment ]).getData()[0];
-
     return {
       id: comment.id,
-      text: xss(commentData.text),
-      post_id: commentData.post_id,
-      user: commentData.user,
-      date_created: commentData.date_created
+      text: xss(comment.text),
+      post_id: comment.post_id,
+      user_name: comment.user_name,
+      date_created: comment.date_created
     };
   }
 };
