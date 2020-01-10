@@ -50,7 +50,7 @@ postsRouter
   .all(requireAuth)
   .all(checkPostExists)
   .get((req, res) => {
-    res.json(PostsService.getById(req.app.get('db'), res.post));
+    res.json(PostsService.getById(res.db, res.post));
   });
 
 postsRouter
