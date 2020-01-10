@@ -17,8 +17,8 @@ postsRouter
       .catch(next)
   })
   .post(jsonBodyParser, (req, res, next) => {
-    const { title, content, genre, user_id } = req.body;
-    const newPost = { title, content, genre, user_id };
+    const { title, content, genre, } = req.body;
+    const newPost = { title, content, genre };
 
     for (const [key, value] of Object.entries(newPost)) {
       if (value === undefined) {
@@ -29,6 +29,8 @@ postsRouter
           })
       }
     }
+
+    newPost.user_id = req.user.id;
 
     PostsService.insertPost(
       req.app.get('db'),

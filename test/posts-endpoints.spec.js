@@ -202,7 +202,7 @@ describe('Posts Endpoints', function() {
     });
   });
 
-  describe.only('POST /posts', () => {
+  describe('POST /posts', () => {
     beforeEach('insert users', () => 
       helpers.seedPostsTables(
         db,

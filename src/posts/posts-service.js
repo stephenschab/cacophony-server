@@ -96,7 +96,6 @@ const PostsService = {
 };
 
 const userFields = [
-  'user.id AS user:id',
   'user.user_name AS user:user_name'
 ];
 
