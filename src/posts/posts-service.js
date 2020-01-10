@@ -20,7 +20,7 @@ const PostsService = {
 
   getById(db, id) {
     return PostsService.getAllPosts(db)
-      .where('cacophony_posts.id', id)
+      .where('pst.id', id)
       .first();
   },
 
