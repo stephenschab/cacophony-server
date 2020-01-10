@@ -15,8 +15,7 @@ const PostsService = {
         'cacophony_users AS user',
         'pst.user_id',
         'user.id'
-      )
-      .groupBy('user.id');
+      );
   },
 
   getById(db, id) {
