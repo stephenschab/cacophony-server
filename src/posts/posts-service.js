@@ -31,20 +31,20 @@ const PostsService = {
         'comment.text',
         'comment.date_created',
         'user.user_name',
-        'post.id'
+        'pst.id'
       )
       .where('comment.post_id', post_id)
       .join(
         'cacophony_users AS user',
         'comment.user_id',
-        'user.id',
+        'user.id'
       )
       .join(
         'cacophony_posts AS pst',
         'pst.id',
         'comment.post_id'
       )
-      .groupBy('comment.id', 'user.id');
+      .groupBy('comment.id');
   },
 
   insertPost(db, newPost) {
