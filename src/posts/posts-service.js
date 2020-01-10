@@ -28,6 +28,11 @@ const PostsService = {
         'pst.date_created',
         'user.user_name'
       )
+      .join(
+        'cacophony_users AS user',
+        'pst.user_id',
+        'user.id'
+      )
       .where('pst.id', id)
       .first();
   },
