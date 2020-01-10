@@ -49,8 +49,8 @@ postsRouter
   .route('/:post_id')
   .all(requireAuth)
   .all(checkPostExists)
-  .get((req, res, next) => {
-    res.json(PostsService.serializePost(PostsService.getById(req.body.id)));
+  .get((req, res) => {
+    res.json(PostsService.getById(res.post));
   });
 
 postsRouter
