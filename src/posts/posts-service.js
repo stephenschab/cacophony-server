@@ -3,19 +3,19 @@ const xss = require('xss');
 const PostsService = {
   getAllPosts(db) {
     return db('cacophony_posts as pst')
-      .select('*'
-        // 'pst.id',
-        // 'pst.title',
-        // 'pst.content',
-        // 'pst.genre',
-        // 'pst.date_created',
-        // 'user.user_name'
+      .select(
+        'pst.id',
+        'pst.title',
+        'pst.content',
+        'pst.genre',
+        'pst.date_created',
+        'user.user_name'
+      )
+      .join(
+        'cacophony_users AS user',
+        'pst.user_id',
+        'user.id'
       );
-      // .Join(
-      //   'cacophony_users AS user',
-      //   'pst.user_id',
-      //   'user.id'
-      // );
   },
 
   getById(db, id) {
