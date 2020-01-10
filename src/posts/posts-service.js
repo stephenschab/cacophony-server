@@ -19,7 +19,15 @@ const PostsService = {
   },
 
   getById(db, id) {
-    return PostsService.getAllPosts(db)
+    return db('cacophony_posts AS pst')
+      .select(
+        'pst.id',
+        'pst.title',
+        'pst.content',
+        'pst.genre',
+        'pst.date_created',
+        'user.user_name'
+      )
       .where('pst.id', id)
       .first();
   },
