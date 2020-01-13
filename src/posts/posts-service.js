@@ -16,7 +16,7 @@ const PostsService = {
         'pst.user_id',
         'user.id'
       )
-      .join(
+      .leftJoin(
         'cacophony_comments AS comment',
         'pst.id',
         'comment.post_id'
