@@ -31,7 +31,7 @@ postsRouter
     }
 
     newPost.user_id = req.user.id;
-
+    console.log(newPost.user_id)
     PostsService.insertPost(
       req.app.get('db'),
       newPost
@@ -50,7 +50,7 @@ postsRouter
   .all(requireAuth)
   .all(checkPostExists)
   .get((req, res) => {
-    res.json(PostsService.getById(res.db, res.post));
+    res.json(PostsService.serializePost(res.post))
   });
 
 postsRouter
