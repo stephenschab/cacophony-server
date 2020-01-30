@@ -66,9 +66,9 @@
 
   Handles the authorization of user credentials.
 
-  **URL**
+**URL**
 
-    /login
+  /login
 
 * **Method**
 
@@ -99,3 +99,20 @@
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ error: "Incorrect user_name or password" }`
 
+* **Sample Call**
+
+  ```javascript
+  fetch(`${config.API_ENDPOINT}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: {
+      user_name: 'TestUser',
+      password: 'FaKePaSsW0rD'
+    } 
+  ```
+
+**Create and Retrieve Posts**
+----
+  Responsible for storing each new user post and retrieves all users posts.
