@@ -66,7 +66,7 @@
 
   Handles the authorization of user credentials.
 
-**URL**
+* **URL**
 
   /login
 
