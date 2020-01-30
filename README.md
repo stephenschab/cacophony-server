@@ -26,6 +26,7 @@
   If you make a successful POST the server will respond with a successful 201 and the user name and date created.
 
   * **Code:** 201 CREATED <br />
+    **Header:** Location: /users/:user_id 
     **Content:** `{ user_name: 'string', date: new Date() }`
 
 * **Error Response**
