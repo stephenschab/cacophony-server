@@ -1,26 +1,62 @@
-# Express Boilerplate!
+#Cacophony Server
 
-This is a boilerplate project used for starting new projects!
+**Create User**
+----
+  This route is responsible for storing new users in the database.
 
-## Set up
+* **URL**
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+  /api/users
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+* **Method**
 
-## Scripts
+  `POST`
 
-Start the application `npm start`
+* **DataParams**
 
-Start nodemon for the application `npm run dev`
+  In order for a successful POST request to this endpoint you must have an user name, email, and password.
 
-Run the tests `npm test`
+  **Required**
+  `user_name: ['string']`
+  `email: ['string']`
+  `password: ['string']`
 
-## Deploying
+* **Success Response**
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+  If you make a successful POSST the server will respond with a successful 200 and the user name and date created.
+
+  * **Code:** 201 CREATED <br />
+    **Content:** `{ user_name: 'string', date: new Date() }`
+
+* **Error Response**
+
+  If you fail to make a successful request there are several messages you can receive.
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content** `{ error: "Missing {field} in request body" }`
+
+  OR
+
+  * **Code** 400 BAD REQUEST <br />
+    **Content** `{ error: {Password validation error} }`
+  
+  OR
+
+  * **Code** 400 BAD REQUEST <br />
+    **Content** `{ error: "User name already exists" }`
+  
+* **Sample Call**
+
+  ```javascript
+  fetch(`${config.API_ENDPOINT}/users`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: {
+        user_name: 'TestUser'
+        email: 'fakeEmail@gmail.com'
+        password: 'FaKePaSsW0rD!'
+      }
+    })
+  ```
