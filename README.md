@@ -34,17 +34,17 @@
   If you fail to make a successful request there are several messages you may receive.
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content** `{ error: "Missing {field} in request body" }`
+    **Content:** `{ error: "Missing {field} in request body" }`
 
   OR
 
-  * **Code** 400 BAD REQUEST <br />
-    **Content** `{ error: {Password validation error} }`
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error: "Password must {requirement}" }`
   
   OR
 
-  * **Code** 400 BAD REQUEST <br />
-    **Content** `{ error: "User name already exists" }`
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error: "User name already exists" }`
   
 * **Sample Call**
 
@@ -54,11 +54,11 @@
       headers: {
         'content-type': 'application/json'
       },
-      body: {
-        user_name: 'TestUser'
-        email: 'fakeEmail@gmail.com'
+      body: JSON.stringify({
+        user_name: 'TestUser',
+        email: 'fakeEmail@gmail.com',
         password: 'FaKePaSsW0rD!'
-      }
+      })
     })
   ```
 
@@ -85,7 +85,7 @@
 
 * **Success Response**
 
-  Upon a successful request this endpoint will take the username and password to create and respond with a JWT that is required for __Authorization__ to other endpoints.
+  Upon a successful request this endpoint will take the username and password. With correct credentials this endpoint creates a JWT and responds with it.
 
   * **Code:** 200 SUCCESS <br />
 
