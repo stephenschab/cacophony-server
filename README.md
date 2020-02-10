@@ -9,7 +9,7 @@ This server handles all of the backend processes for the Cacophony client. This 
 **Tech Stack:** NodeJS, Express, Mocha & Chai
 
 ## **Create User**
-----
+
   This route is responsible for storing new users in the database.
 
 * **URL**
@@ -71,7 +71,6 @@ This server handles all of the backend processes for the Cacophony client. This 
   ```
 
 ## **User Authorization**
-----
 
   Handles the authorization of user credentials.
 
@@ -123,7 +122,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   ```
 
 ## **Create and Retrieve Posts**
-----
+
   Responsible for storing each new user post and retrieves all users posts, a single post based off of the post id or all of the comments for a single post.
 
 * **URL**
@@ -287,7 +286,7 @@ This server handles all of the backend processes for the Cacophony client. This 
     ```
 
 ## **Create Comments**
-----
+
   This endpoint handles the creation of all of the comments in the database
 
 * **URL**
