@@ -183,12 +183,12 @@ This server handles all of the backend processes for the Cacophony client. This 
 
   * GET /posts
 
-    * **Code:** 200 <br />
+    * **Code:** 200 SUCCESS <br />
       **Content:** `[ array of posts ]`
 
   * POST /posts
 
-    * **Code:** 201 <br />
+    * **Code:** 201 CREATED <br />
       **Headers:** Location: /posts/:post_id <br />
       **Content:**
       ```javascript 
@@ -201,7 +201,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   
   * GET /posts/:post_id
 
-    * **Code:** 200 <br />
+    * **Code:** 200 SUCCESS <br />
       **Content:**
       ```javascript
       {
@@ -213,7 +213,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   
   * GET /posts/:post_id/comments
 
-    * **Code:** 200 <br />
+    * **Code:** 200 SUCCESS <br />
       **Content:** `[ array of comments ]`
 
 * **Error Response**
@@ -222,21 +222,21 @@ This server handles all of the backend processes for the Cacophony client. This 
 
     If you do not provide a bearer token when attempting to access the endpoint you will receive an error
 
-    * **Code:** 401 <br />
+    * **Code:** 401 UNAUTHORIZED<br />
       **Content:** `{ error: 'Missing bearer token' }`
   
   * POST /posts
 
     If you attempt to make a post without sending a title, content, and genre will result in an error.
 
-    * **Code:** 400 <br />
+    * **Code:** 400 BAD REQUEST<br />
       **Content:** `{ error: `Missing '{field}' in request body` }`
   
   * GET /posts/:post_id | GET /posts/:post_id/comments
 
     If the post that you are trying to access in the database does not exist you will receive an error.
 
-    * **Code:** 404
+    * **Code:** 404 NOT FOUND <br />
       **Content:** `{ error: 'Post doesn't exist' }`
 
 * **Sample Call**
@@ -311,7 +311,7 @@ This server handles all of the backend processes for the Cacophony client. This 
 
   Upon a successful request the endpoint will respond with a 201 code, the location of the comment, and the comment itself
 
-  * **Code:** 201 <br />
+  * **Code:** 201 CREATED <br />
     **Headers:** Location: /comments/:comment_id <br />
     **Content:**
     ```javascript
@@ -328,12 +328,12 @@ This server handles all of the backend processes for the Cacophony client. This 
 
   if you do not submit the required JWT or appropriate fields for a comment you will receive an error.
 
-  * **Code:** 401 <br />
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** `{ error: 'Missing bearer token' }`
 
   OR
 
-  * **Code:** 400 <br />
+  * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ error: 'Missing '{field}' in request body'}`
 
 * **Sample Call**
