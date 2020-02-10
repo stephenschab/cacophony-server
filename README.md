@@ -34,7 +34,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   If you make a successful POST the server will respond with a successful 201 and the user name and date created.
 
   * **Code:** 201 CREATED <br />
-    **Location** /users/:user_id
+    **Header:** Location: /users/:user_id <br />
     **Content:** `{ user_name: 'string', date: new Date() }`
 
 * **Error Response**
@@ -42,17 +42,17 @@ This server handles all of the backend processes for the Cacophony client. This 
   If you fail to make a successful request there are several messages you may receive.
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content** `{ error: "Missing {field} in request body" }`
+    **Content:** `{ error: "Missing {field} in request body" }`
 
   OR
 
-  * **Code** 400 BAD REQUEST <br />
-    **Content** `{ error: {Password validation error} }`
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error: "Password must {requirement}" }`
   
   OR
 
-  * **Code** 400 BAD REQUEST <br />
-    **Content** `{ error: "User name already exists" }`
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error: "User name already exists" }`
   
 * **Sample Call**
 
@@ -62,11 +62,11 @@ This server handles all of the backend processes for the Cacophony client. This 
       headers: {
         'content-type': 'application/json'
       },
-      body: {
-        user_name: 'TestUser'
-        email: 'fakeEmail@gmail.com'
+      body: JSON.stringify({
+        user_name: 'TestUser',
+        email: 'fakeEmail@gmail.com',
         password: 'FaKePaSsW0rD!'
-      }
+      })
     })
   ```
 
@@ -93,7 +93,7 @@ This server handles all of the backend processes for the Cacophony client. This 
 
 * **Success Response**
 
-  Upon a successful request this endpoint will take the user name and password to create and respond with a JWT that is required for authorization to other endpoints.
+  Upon a successful request this endpoint will take the username and password. With correct credentials this endpoint creates a JWT and responds with it.
 
   * **Code:** 200 SUCCESS <br />
 
@@ -122,7 +122,7 @@ This server handles all of the backend processes for the Cacophony client. This 
     } 
   ```
 
-**Create and Retrieve Posts**
+## **Create and Retrieve Posts**
 ----
   Responsible for storing each new user post and retrieves all users posts, a single post based off of the post id or all of the comments for a single post.
 
@@ -190,7 +190,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   * POST /posts
 
     * **Code:** 201 <br />
-      **Location:** /posts/:post_id <br />
+      **Headers:** Location: /posts/:post_id <br />
       **Content:**
       ```javascript 
       {
@@ -313,7 +313,7 @@ This server handles all of the backend processes for the Cacophony client. This 
   Upon a successful request the endpoint will respond with a 201 code, the location of the comment, and the comment itself
 
   * **Code:** 201 <br />
-    **Location:** /comments/:comment_id <br />
+    **Headers:** Location: /comments/:comment_id <br />
     **Content:**
     ```javascript
     {
